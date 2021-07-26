@@ -134,7 +134,7 @@ add column dept_manager varchar(255) null after dept_name;
 describe departments_dup;
 
 select * 
-from departments_dup
+from departments_du	p
 order by dept_no desc;
 
 commit;
