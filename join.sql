@@ -160,3 +160,53 @@ group by campo1,campo2;
 
 */
 
+
+/*LEFT JOIN
+A , B Tables
+intersection of keys between A and B plus all the keys,null values that are in A and not in B
+that's why ordering table matters
+*/
+/*Removing duplicates*/
+delete from dept_manager_dup
+where emp_no = '110228';
+delete from department_dup
+where dept_no = 'd009';
+
+insert into dept_manager_dup
+values('110228','d003','1992-03-21','9999-01-01');
+
+insert into department_dup
+values('d009','Customer Service');
+
+select m.dept_no, m.emp_no, d.dept_name
+from 
+	dept_manager_dup m 
+left outer join 
+	department_dup d on m.dept_no = d.dept_no
+group by m.dept_no, m.emp_no, d.dept_name
+order by m.dept_no;
+/*by switching table's order we get values from b that are not in atoB and a */
+
+select d.dept_no, m.emp_no, d.dept_name
+from
+	department_dup d
+left join dept_manager_dup m on d.dept_no = m.dept_no
+group by d.dept_no, m.emp_no, d.dept_name
+order by d.dept_no;
+
+/*can we get only keys that are only in table A and not in B? */
+
+
+select m.dept_no, m.emp_no, d.dept_name
+from
+	dept_manager_dup m 
+left join department_dup d on d.dept_no = m.dept_no
+where dept_name is null
+group by m.dept_no, m.emp_no, d.dept_name
+order by m.dept_no;
+
+
+/*
+Join the 'employees' and the 'dept_manager' tables to return a subset of all the employees whose last name is Markovitch. See if the output contains a manager with that name.  
+*/
+
