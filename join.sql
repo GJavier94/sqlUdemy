@@ -133,3 +133,30 @@ from
 inner join department_dup d on m.dept_no = d.dept_no
 group by m.emp_no, m.dept_no, d.dept_name
 order by dept_no;
+
+/*
+Just to watch how group by works
+
+drop table tabla1;
+
+create table tabla1(
+	campo1 varchar(255),
+    campo2 varchar(255),
+    campo3 varchar(255)
+);
+
+insert into tabla1()
+values
+("mexico","hidalgo","tizayuca"),
+("mexico","hidalgo","tizayuca"),
+("mexico","hidalgo","tizayuca"),
+("mexico","hidalgo","actopan"),
+("mexico","hidalgo","actopan"),
+("mexico","cdmx","gam");
+
+select campo1, campo2, count(campo1), count(campo2)
+from tabla1
+group by campo1,campo2;
+
+*/
+
