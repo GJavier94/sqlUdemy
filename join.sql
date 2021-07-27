@@ -76,3 +76,60 @@ WHERE
 insert into dept_manager_dup
 select * 
 from dept_manager;
+
+
+/*JOIN between department_manager_dup and department dup 
+checking the current table */
+select * 
+from dept_manager_dup;
+
+select 
+	t1.emp_no, t1.dept_no, t1.from_date, t2.dept_name
+from
+	dept_manager_dup t1
+join department_dup t2 on t1.dept_no = t2.dept_no;
+
+/*alias for dept_manager_dup m
+alias for department_dup d*/
+
+select m.dept_no, m.emp_no, d.dept_name
+from 
+	dept_manager_dup m
+inner join department_dup d on m.dept_no = d.dept_no
+order by dept_no;
+
+/*
+Extract a list containing information about all managers’ employee number,
+ first and last name, department number, and hire date. 
+*/
+
+select e.emp_no, e.first_name, e.last_name, m.dept_no, e.hire_date
+from employees e
+inner join dept_manager_dup m on m.emp_no = e.emp_no;
+
+
+/*Duplicate records on uncontrolled dataset*/
+select * 
+from dept_manager_dup;
+
+/*
+Inserting duplicate values...
+ It is possible to insert it cause this table doesn't have 
+primary or unique key*/
+
+insert into dept_manager_dup()
+values  ('110228', 'd003', '1992-03-21', '9999-01-01');
+
+
+alter table department_dup
+drop index dept_name;
+
+insert into department_dup()
+values ('d009','Customer Service');
+
+select m.dept_no, m.emp_no, d.dept_name
+from 
+	dept_manager_dup m
+inner join department_dup d on m.dept_no = d.dept_no
+group by m.emp_no, m.dept_no, d.dept_name
+order by dept_no;
