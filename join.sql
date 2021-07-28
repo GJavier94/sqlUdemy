@@ -336,4 +336,115 @@ from
 inner join salaries s on e.emp_no = s.emp_no
 group by e.gender
 order by e.gender;
+
+
+/*JOINING MULTIPLE TABLES
+first_name, last_name, hire_date, from_date, dept_name */
+
+select e.first_name, e.last_name, e.hire_date, dm.from_date, d.dept_name
+from employees e
+	inner join dept_manager dm on e.emp_no = dm.emp_no
+    inner join departments d on dm.dept_no = d.dept_no
+order by e.emp_no, d.dept_no;
+
+/*
+Select all managers’ 
+first and last name, 
+hire date, 
+job title, 
+start date, and 
+department name.
+*/
+
+SELECT 
+    e.first_name,
+    e.last_name,
+    e.hire_date,
+    t.title,
+    dm.from_date,
+    d.dept_name
+FROM
+    employees e
+        INNER JOIN
+    dept_manager dm ON e.emp_no = dm.emp_no
+        INNER JOIN
+    departments d ON dm.dept_no = dm.dept_no
+        INNER JOIN
+    titles t ON e.emp_no = t.emp_no 
+where t.title = 'Manager'
+ORDER BY e.emp_no , dm.dept_no;
+	
+
+/*"2nd solution"*/
+
+SELECT 
+    e.first_name,
+    e.last_name,
+    e.hire_date,
+    t.title,
+    dm.from_date,
+    d.dept_name
+FROM
+    employees e
+        INNER JOIN
+    dept_manager dm ON e.emp_no = dm.emp_no
+        INNER JOIN
+    departments d ON dm.dept_no = dm.dept_no
+        INNER JOIN
+    titles t ON e.emp_no = t.emp_no AND t.from_date = dm.from_date /*The day when she/he became manager*/
+	ORDER BY e.emp_no , dm.dept_no;
+	
+
+select d.dept_name, avg(salary) as average_salary
+from 
+	employees e
+    inner join dept_manager dm on e.emp_no = dm.emp_no
+    inner join salaries s on e.emp_no = s.emp_no
+    inner join departments d on dm.dept_no = d.dept_no
+group by dm.dept_no
+order by d.dept_name, average_salary;
+
+/*but we can omit employees by using a join whose keys of joining are both FK for the respectives tables
+*/
+
+
+select d.dept_name, avg(salary) as average_salary
+from 
+	dept_manager dm 
+    inner join salaries s on dm.emp_no = s.emp_no
+    inner join departments d on dm.dept_no = d.dept_no
+group by dm.dept_no
+having average_salary > 60000
+order by average_salary desc;
+
+
+/*Exercise tips and tricks for joins */
+/*How many male and how many female managers do we have in the ‘employees’ database?*/
+
+select e.gender, count(gender) 
+from employees e
+	inner join dept_manager dm on e.emp_no = dm.emp_no
+group by e.gender
+order by e.gender desc;
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		
