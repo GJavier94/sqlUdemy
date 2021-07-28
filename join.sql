@@ -234,4 +234,106 @@ from
     right outer join department_dup d on d.dept_no = m.dept_no
 order by d.dept_no;
 
+/*where clause can also be used in substitution of inner join especifically
+*/
 
+
+/*Extract a list containing information about all managers’ 
+employee number, first and 
+last name, department number, and hire date. 
+Use the old type of join syntax to obtain the result.*/
+
+
+select e.emp_no, e.first_name, e.last_name, d.dept_no, e.hire_date
+from 
+	employees e,
+    dept_manager_dup d
+where e.emp_no = d.emp_no;
+/*where and join  can be used together join for joinin tables where for refining search
+example:*/
+select e.emp_no, e.first_name, e.last_name, s.salary
+from employees e
+    inner join salaries s on e.emp_no = s.emp_no
+    where s.salary > 145000;
+
+
+set @@global.sql_mode := replace(@@global.sql_mode, 'ONLY_FULL_GROUP_BY', '');
+
+/*
+Select the first and last name, the hire date, and the job title of
+ all employees whose first name is “Margareta” and 
+ have the last name “Markovitch”.*/
+
+
+select e.first_name, e.last_name, e.hire_date, t.title
+from 
+	employees e
+    inner join titles t on e.emp_no = t.emp_no
+where e.first_name = "Margareta" and e.last_name = "Markovitch"
+order by e.emp_no;
+
+/*CROSS JOIN
+Cartesian product of two tables by especifying the two fiels */
+/*Getting all possible combinations of manager and departments */
+
+
+select dm.*, d.*
+from dept_manager dm
+cross join departments d 
+order by dm.emp_no, d.dept_no;
+
+/*what if we want to omit the dept where he is currently working on ? */
+
+select dm.*, d.*
+from dept_manager dm
+cross join departments d 
+where dm.dept_no != d.dept_no
+order by dm.emp_no, d.dept_no;
+
+/*if we want info about the manager ( employee data ) we will need to join it with 
+employees table*/
+
+
+select e.*, dm.*, d.*
+from dept_manager dm
+cross join departments d 
+	inner join employees e on e.emp_no = dm.emp_no
+where dm.dept_no != d.dept_no
+order by dm.emp_no, d.dept_no;
+
+/*EXERCISE*/
+
+/*
+Use a CROSS JOIN to return a list with all possible combinations 
+between managers from the dept_manager table and department number 9.
+*/
+
+select m.*, d.*
+from 
+	dept_manager m
+    cross join 
+		departments d
+where d.dept_no = 'd009'
+order by m.emp_no , m.dept_no;
+
+
+/*exercise 2
+Return a list with the first 10 employees 
+with all the departments they can be assigned to.
+*/
+
+select e.*, d.*	
+from employees e
+cross join departments d
+where e.emp_no <= 10011 
+order by e.emp_no, d.dept_name;
+
+
+/*Using group by in joined tables */
+select e.gender , avg(s.salary) as salario_promedio
+from 
+	employees e
+inner join salaries s on e.emp_no = s.emp_no
+group by e.gender
+order by e.gender;
+		
