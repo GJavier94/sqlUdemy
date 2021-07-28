@@ -205,8 +205,33 @@ where dept_name is null
 group by m.dept_no, m.emp_no, d.dept_name
 order by m.dept_no;
 
-
 /*
-Join the 'employees' and the 'dept_manager' tables to return a subset of all the employees whose last name is Markovitch. See if the output contains a manager with that name.  
+Join the 'employees' and the 'dept_manager' tables 
+to return a subset of all the employees 
+whose last name is Markovitch. 
+See if the output contains a manager with that name.  
 */
+
+select  e.emp_no, e.first_name, e.last_name, m.dept_no, m.from_date
+from  
+	dept_manager_dup m
+left join 
+	employees e on m.emp_no= e.emp_no
+where e.last_name = 'Markovitch'
+order by e.emp_no, m.dept_no;
+
+/*RIGHT OUTER JOIN 
+same logic as left join but inverting tables*/
+select * 
+from dept_manager_dup;
+
+select *
+from department_dup;
+
+select d.dept_no, d.dept_name, m.emp_no
+from 
+	dept_manager m
+    right outer join department_dup d on d.dept_no = m.dept_no
+order by d.dept_no;
+
 
